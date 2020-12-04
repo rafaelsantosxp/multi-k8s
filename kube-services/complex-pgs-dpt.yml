@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-pgs-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: complex-pgs
+  template:
+    metadata:
+      labels:
+        component: complex-pgs
+    spec:
+      volumes:
+        - name: pgs-stg
+          persistentVolumeClaim:
+              claimName: complex-pgs-pvc
+      containers:
+        - name: complex-pgs
+          image: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: complex-pgs-database-password 
+                  key: PGSQL_PASSWORD
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgs-stg
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"

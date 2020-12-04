@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-ui-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: complex-ui
+  template:
+    metadata:
+      labels:
+        app: complex-ui
+    spec:
+      containers:
+        - name: complex-ui
+          image: rafaelsantosxp/multi-client
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000

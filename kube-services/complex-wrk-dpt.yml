@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-wrk-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: complex-wrk
+  template:
+    metadata:
+      labels:
+        app: complex-wrk
+    spec:
+      containers:
+        - name: complex-wrk
+          image: rafaelsantosxp/multi-worker
+          env:
+            - name: REDIS_HOST
+              value: complex-rds-service
+            - name: REDIS_PORT
+              value: "6379"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"

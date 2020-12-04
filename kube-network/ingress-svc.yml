@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: complex-ingress-svc
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: complex-ui-service # refer ui kind service name
+              servicePort: 3000 # refer ui kind service port
+          - path: /api/
+            backend:
+              serviceName: complex-ui-service # refer ui kind service name
+              servicePort: 5000 # refer ui kind service port              

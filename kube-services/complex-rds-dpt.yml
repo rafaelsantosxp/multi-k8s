@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-rds-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: complex-rds
+  template:
+    metadata:
+      labels:
+        component: complex-rds
+    spec:
+      containers:
+        - name: complex-rds
+          image: redis
+          ports:
+            - containerPort: 6379
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"

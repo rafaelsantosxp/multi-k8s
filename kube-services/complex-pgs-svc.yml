@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: complex-pgs-service
+spec:
+  selector:
+    component: complex-pgs
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432

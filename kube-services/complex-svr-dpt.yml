@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-srv-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: complex-srv
+  template:
+    metadata:
+      labels:
+        app: complex-srv
+    spec:
+      containers:
+      - name: complex-srv
+        image: rafaelsantosxp/multi-server
+        env:
+          - name: REDIS_HOST
+            value: complex-rds-service
+          - name: REDIS_PORT
+            value: "6379"
+          - name: PGUSER
+            value: postgres
+          - name: PGHOST
+            value: complex-pgs-database
+          - name: PGPORT
+            value: "5432"
+          - name: PGDATABASE
+            value: postgres
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: complex-pgs-database-password 
+                key: PGSQL_PASSWORD
+
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
